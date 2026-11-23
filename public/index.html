@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153e36">
+  <meta name="description" content="A personalized news recommendation project powered by semantic embeddings.">
+  <title>Current — A little more your world.</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Current home"><span class="brand-mark">c<span>·</span></span>current<span class="brand-period">.</span></a>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-view="feed" aria-current="page">For you</button>
+      <button class="nav-item" data-view="explore">Explore</button>
+      <button class="nav-item" data-view="saved">Saved <span id="saved-count">0</span></button>
+    </nav>
+    <button class="how-button" id="how-button">Behind your feed <span aria-hidden="true">↗</span></button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="tiny-line"></span> LESS NOISE. MORE DISCOVERY.</div>
+        <h1 id="hero-title">A little more<br><em>your world.</em></h1>
+        <p>Stories that connect with your curiosity. <br>Discover news through meaning, beyond keywords.</p>
+        <div class="hero-caption"><span class="mini-star" aria-hidden="true">✳</span> Powered by semantic understanding</div>
+      </div>
+      <div class="semantic-art" aria-hidden="true">
+        <svg viewBox="0 0 530 330" role="presentation">
+          <defs><pattern id="dots" width="23" height="23" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#c6cfc1"/></pattern></defs>
+          <rect width="530" height="330" fill="url(#dots)"/>
+          <circle cx="265" cy="167" r="118" fill="none" stroke="#ccd6c5" stroke-dasharray="4 7"/>
+          <circle cx="265" cy="167" r="70" fill="none" stroke="#c5d2bf"/>
+          <g stroke="#a7bca5" stroke-width="1.5"><path d="M265 167L117 87M265 167L408 82M265 167L402 249M265 167L102 251M265 167L279 36M265 167L279 295"/></g>
+          <g fill="#376a55"><circle cx="279" cy="36" r="4"/><circle cx="279" cy="295" r="4"/><circle cx="102" cy="251" r="4"/><circle cx="390" cy="148" r="4"/></g>
+          <rect x="38" y="62" width="149" height="48" rx="10" fill="#fffdf7" stroke="#d7ddd0"/><text x="61" y="92" fill="#52664e" font-size="14">✦ Climate &amp; energy</text>
+          <rect x="351" y="58" width="134" height="48" rx="10" fill="#fffdf7" stroke="#d7ddd0"/><text x="373" y="88" fill="#52664e" font-size="14">↗ Technology</text>
+          <rect x="341" y="225" width="147" height="48" rx="10" fill="#fffdf7" stroke="#d7ddd0"/><text x="363" y="255" fill="#52664e" font-size="14">◎ New discoveries</text>
+          <circle cx="265" cy="167" r="43" fill="#153e36"/><text x="265" y="164" text-anchor="middle" fill="#edf1d3" font-size="23">✳</text><text x="265" y="187" text-anchor="middle" fill="#edf1d3" font-size="12">YOUR CURIOSITY</text>
+        </svg>
+        <span class="art-caption">Different words. Connected ideas.</span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="sidebar">
+        <section class="interest-panel" aria-labelledby="interest-heading">
+          <div class="section-kicker">MAKE IT PERSONAL</div>
+          <h2 id="interest-heading">What draws you in?</h2>
+          <p class="muted">Pick a few topics. Tell us what you’re curious about.</p>
+          <div id="topic-chips" class="topic-chips" aria-label="Choose interests"></div>
+          <label for="interest-text">Or get a little more specific</label>
+          <textarea id="interest-text" rows="4" maxlength="300" placeholder="e.g. How technology can help us live more sustainably"></textarea>
+          <div class="input-hint">Write naturally. We look for meaning.</div>
+          <button class="primary-button" id="personalize">Build my feed <span aria-hidden="true">→</span></button>
+          <p class="feedback-note" id="feedback-note">Like a story to help shape your feed.</p>
+          <button class="text-button" id="reset-profile">Reset interests &amp; likes</button>
+        </section>
+        <section class="model-panel">
+          <div class="model-heading"><span class="status-dot loading" id="status-dot"></span><span id="model-status">Connecting to model</span></div>
+          <p id="model-detail">Loading the local semantic engine…</p>
+          <div class="model-facts"><span><b>384</b> dimensions</span><span><b>24</b> sample stories</span></div>
+        </section>
+        <div class="project-note"><span>PROJECT 41</span><br>Personalized News Recommendation<br>Using Semantic Embeddings</div>
+      </aside>
+
+      <section class="feed" aria-labelledby="feed-heading">
+        <div class="feed-header"><div><div class="section-kicker" id="feed-kicker">YOUR DAILY DISCOVERY</div><h2 id="feed-heading">Curated around you<span class="green-period">.</span></h2></div><button class="text-button compare-button" id="compare-button" disabled>Compare methods ↗</button></div>
+        <p id="feed-description" class="feed-description">Start with a few interests to find stories that resonate.</p>
+        <div class="filter-bar"><div id="categories" class="categories" aria-label="Filter by category"></div><label class="limit-label">Show <select id="result-limit" aria-label="Number of recommendations"><option value="6">6</option><option value="12" selected>12</option><option value="24">24</option></select></label></div>
+        <div class="dataset-note"><span class="dataset-icon" aria-hidden="true">◈</span> Demo collection · Original illustrative articles, not live reporting.</div>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <div id="results-meta" class="results-meta" aria-live="polite"></div>
+        <div id="article-grid" class="article-grid"></div>
+        <div id="empty-state" class="empty-state" hidden></div>
+      </section>
+    </div>
+    <footer><span class="footer-brand">current.</span><span>A better connection between you and what you read.</span><button class="text-button" id="how-footer">How it works ↗</button></footer>
+  </main>
+
+  <dialog id="article-dialog" aria-labelledby="article-title"><div class="dialog-top"><span class="section-kicker">THE READING ROOM</span><button class="close-button" data-close="article-dialog" aria-label="Close article">×</button></div><div id="article-content"></div></dialog>
+  <dialog id="how-dialog" aria-labelledby="how-title">
+    <div class="dialog-top"><span class="section-kicker">PROJECT 41 · UNDER THE HOOD</span><button class="close-button" data-close="how-dialog" aria-label="Close explanation">×</button></div>
+    <h2 id="how-title">Meaning makes the connection.</h2><p class="dialog-lead">Keyword matching can miss the idea behind a phrase. Semantic embeddings help bridge that gap.</p>
+    <div class="steps"><div><span>01</span><h3>Describe your interests</h3><p>Your selected topics and description become the starting point for your profile.</p></div><div><span>02</span><h3>Represent the meaning</h3><p>MiniLM encodes each interest and article into a 384-dimensional vector. Related concepts tend to be closer together.</p></div><div><span>03</span><h3>Find the connection</h3><p>Cosine similarity compares your profile with each article. The most similar articles appear first.</p></div><div><span>04</span><h3>Make it more personal</h3><p>When you like stories, your profile blends 80% stated interests with 20% liked-article meaning.</p></div></div>
+    <div class="explanation-box"><b>What does the score mean?</b><p>Cosine similarity ranges from −1 to 1. A higher value indicates closer embedding directions, not a probability, accuracy score, or guarantee that you will like a story. Explanations show the closest individual interest; ranking uses your combined profile.</p></div>
+    <p class="small muted">Model: Xenova/all-MiniLM-L6-v2 · Mean pooling · L2 normalization · Local CPU inference. The first run downloads model files; your interest text is processed on this computer. Saved stories and preferences live in this browser. Sample articles are fictional educational content.</p>
+  </dialog>
+  <dialog id="compare-dialog" class="wide-dialog" aria-labelledby="compare-title"><div class="dialog-top"><span class="section-kicker">TWO WAYS TO FIND A STORY</span><button class="close-button" data-close="compare-dialog" aria-label="Close comparison">×</button></div><h2 id="compare-title">Beyond an exact word match.</h2><p class="dialog-lead">The same interests, compared with two different ranking methods.</p><div id="comparison-content"></div><p class="small muted">Semantic scores use cosine similarity. Keyword scores show the fraction of unique query terms found in an article’s title, summary, or tags, excluding common stop words. These scales are different and are not accuracy percentages. Zero keyword scores are tied; their order is arbitrary.</p></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
